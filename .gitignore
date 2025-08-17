@@ -1,0 +1,64 @@
+# Environment variables
+.env
+.env.local
+.env.production
+.env.*.local
+
+# Dependencies
+node_modules/
+vendor/
+
+# Build outputs
+dist/
+build/
+.next/
+out/
+bin/
+tmp/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+backend.log
+frontend.log
+
+# Process IDs
+*.pid
+backend.pid
+frontend.pid
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Testing
+coverage/
+*.cover
+*.test
+
+# Go
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Database
+*.sqlite
+*.db
+postgres_data/
+
+# Air (Go hot reload)
+backend/tmp/
+backend/build-errors.log
+
+# Misc
+.cache/
+.temp/
+*.bak
+*.backup

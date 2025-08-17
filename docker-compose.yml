@@ -1,0 +1,58 @@
+# Compose Specification (no version field needed)
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: cs2logs
+      POSTGRES_USER: cs2admin
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-localpass123}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cs2admin"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - cs2logs
+
+  backend:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "${BACKEND_PORT:-9090}:9090"
+    environment:
+      DATABASE_URL: postgres://cs2admin:${DB_PASSWORD:-localpass123}@postgres:5432/cs2logs?sslmode=disable
+      ALLOWED_IPS: ${ALLOWED_IPS:-127.0.0.1,::1,localhost}
+      GIN_MODE: ${GIN_MODE:-release}
+      PORT: 9090
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - cs2logs
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "${FRONTEND_PORT:-6173}:6173"
+    environment:
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:9090}
+    depends_on:
+      - backend
+    networks:
+      - cs2logs
+
+networks:
+  cs2logs:
+    driver: bridge
+
+volumes:
+  postgres_data:
