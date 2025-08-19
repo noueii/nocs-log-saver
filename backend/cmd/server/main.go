@@ -21,12 +21,15 @@ import (
 func main() {
 	// Load environment variables
 	if err := godotenv.Load(); err != nil {
-		log.Println("No .env file found")
+		log.Println("No .env file found - using environment variables")
 	}
 
 	// Database configuration
+	dbURL := getEnv("DATABASE_URL", "postgres://cs2admin:localpass123@localhost:5432/cs2logs?sslmode=disable")
+	log.Printf("Connecting to database with URL: %s", dbURL[:20]+"...") // Log first part of URL for debugging
+	
 	dbConfig := config.DatabaseConfig{
-		URL:             getEnv("DATABASE_URL", "postgresql://cs2admin:password@localhost:5432/cs2logs"),
+		URL:             dbURL,
 		MaxConnections:  25,
 		MaxIdleConns:    5,
 		ConnMaxLifetime: 5 * time.Minute,
@@ -42,6 +45,11 @@ func main() {
 	// Run migrations
 	if err := config.RunMigrations(db); err != nil {
 		log.Fatalf("Failed to run migrations: %v", err)
+	}
+	
+	// Run auth migrations
+	if err := config.RunAuthMigrations(db.DB); err != nil {
+		log.Fatalf("Failed to run auth migrations: %v", err)
 	}
 
 	// Initialize repositories

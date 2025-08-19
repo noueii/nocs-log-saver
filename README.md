@@ -2,6 +2,19 @@
 
 A comprehensive log aggregation and analysis system for Counter-Strike 2 servers.
 
+## Quick Start - ONE COMMAND
+
+```bash
+make docker-rebuild
+```
+
+That's it. Everything is set up automatically. No additional steps needed.
+
+### Access the Application
+- **Frontend**: http://localhost:6173
+- **Username**: admin
+- **Password**: Admin123!
+
 ## Features
 
 - **Log Collection**: Receive and store logs from multiple CS2 servers

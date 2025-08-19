@@ -39,10 +39,28 @@ func NewDatabase(config DatabaseConfig) (*sqlx.DB, error) {
 // RunMigrations executes database migrations
 func RunMigrations(db *sqlx.DB) error {
 	migrations := []string{
+		// Enable UUID extension
+		`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`,
+		
+		// Create users table FIRST (no dependencies)
+		`CREATE TABLE IF NOT EXISTS users (
+			id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+			username VARCHAR(50) UNIQUE NOT NULL,
+			email VARCHAR(100) UNIQUE NOT NULL,
+			password_hash VARCHAR(255) NOT NULL,
+			full_name VARCHAR(255),
+			role VARCHAR(20) DEFAULT 'viewer',
+			is_active BOOLEAN DEFAULT true,
+			last_login TIMESTAMP,
+			created_at TIMESTAMP DEFAULT NOW(),
+			updated_at TIMESTAMP DEFAULT NOW()
+		)`,
+		
 		`CREATE TABLE IF NOT EXISTS servers (
 			id VARCHAR(50) PRIMARY KEY,
 			name VARCHAR(100),
 			ip_address VARCHAR(45),
+			api_key VARCHAR(255),
 			last_seen TIMESTAMP,
 			created_at TIMESTAMP DEFAULT NOW()
 		)`,
@@ -75,7 +93,8 @@ func RunMigrations(db *sqlx.DB) error {
 			created_at TIMESTAMP DEFAULT NOW()
 		)`,
 		
-		`CREATE TABLE IF NOT EXISTS sessions (
+		// Rename to game_sessions to avoid conflict with user sessions
+		`CREATE TABLE IF NOT EXISTS game_sessions (
 			id VARCHAR(100) PRIMARY KEY,
 			server_id VARCHAR(50) REFERENCES servers(id),
 			map_name VARCHAR(100),
@@ -83,6 +102,17 @@ func RunMigrations(db *sqlx.DB) error {
 			ended_at TIMESTAMP,
 			status VARCHAR(20) DEFAULT 'active',
 			metadata JSONB
+		)`,
+		
+		// Create sessions table for user authentication (JWT refresh tokens)
+		`CREATE TABLE IF NOT EXISTS sessions (
+			id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+			user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+			refresh_token VARCHAR(500) UNIQUE NOT NULL,
+			expires_at TIMESTAMP NOT NULL,
+			ip_address VARCHAR(45),
+			user_agent TEXT,
+			created_at TIMESTAMP DEFAULT NOW()
 		)`,
 		
 		`CREATE TABLE IF NOT EXISTS ip_whitelist (
@@ -96,17 +126,36 @@ func RunMigrations(db *sqlx.DB) error {
 			created_by VARCHAR(100)
 		)`,
 		
+		// Create indexes
+		`CREATE INDEX IF NOT EXISTS idx_users_email ON users(email)`,
+		`CREATE INDEX IF NOT EXISTS idx_users_username ON users(username)`,
 		`CREATE INDEX IF NOT EXISTS idx_raw_logs_server_id ON raw_logs(server_id)`,
 		`CREATE INDEX IF NOT EXISTS idx_parsed_logs_session_id ON parsed_logs(session_id)`,
 		`CREATE INDEX IF NOT EXISTS idx_parsed_logs_event_type ON parsed_logs(event_type)`,
+		`CREATE INDEX IF NOT EXISTS idx_game_sessions_server_id ON game_sessions(server_id)`,
+		`CREATE INDEX IF NOT EXISTS idx_sessions_user_id ON sessions(user_id)`,
+		`CREATE INDEX IF NOT EXISTS idx_sessions_refresh_token ON sessions(refresh_token)`,
+		`CREATE INDEX IF NOT EXISTS idx_sessions_expires_at ON sessions(expires_at)`,
 		`CREATE INDEX IF NOT EXISTS idx_ip_whitelist_ip ON ip_whitelist(ip_address) WHERE enabled = true`,
+		
+		// Insert default admin user (password: Admin123!)
+		// This hash is bcrypt for "Admin123!" with cost 10
+		`INSERT INTO users (username, email, password_hash, full_name, role, is_active) 
+		 VALUES ('admin', 'admin@cs2logs.local', '$2a$10$aEfbkq9FjLKf08TDjViFQ.7f8i/Mwc2Z3boihMEgpMR39rIByH3A2', 'System Administrator', 'admin', true)
+		 ON CONFLICT (username) DO NOTHING`,
+		
+		// Insert test server
+		`INSERT INTO servers (id, name, ip_address, api_key)
+		 VALUES ('testserver', 'Test Server', '127.0.0.1', 'test-api-key-123')
+		 ON CONFLICT (id) DO NOTHING`,
 	}
 
-	for _, migration := range migrations {
+	for i, migration := range migrations {
 		if _, err := db.Exec(migration); err != nil {
-			return fmt.Errorf("run migration: %w", err)
+			return fmt.Errorf("run migration %d: %w", i, err)
 		}
 	}
-
+	
+	fmt.Println("✅ All database migrations completed successfully")
 	return nil
 }
