@@ -1,9 +1,23 @@
 {
   "permissions": {
     "allow": [
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(docker compose exec:*)",
+      "mcp__shadcn-ui__get_component",
+      "Bash(docker compose:*)"
     ],
     "deny": [],
     "ask": []
-  }
+  },
+  "enabledMcpjsonServers": [
+    "filesystem",
+    "github",
+    "sequential-thinking",
+    "memory",
+    "fetch",
+    "Context7",
+    "puppeteer",
+    "gemini-cli",
+    "shadcn-ui"
+  ]
 }

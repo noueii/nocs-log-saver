@@ -61,6 +61,9 @@ func (r *PostgresServerRepository) FindByID(ctx context.Context, id string) (*en
 	if err == sql.ErrNoRows {
 		return nil, fmt.Errorf("server not found")
 	}
+	if err != nil {
+		return nil, fmt.Errorf("query server: %w", err)
+	}
 	return &server, err
 }
 

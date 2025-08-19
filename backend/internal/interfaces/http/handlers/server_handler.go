@@ -86,7 +86,7 @@ func (h *ServerHandler) Create(c *gin.Context) {
 
 	server := &entities.Server{
 		Name:        req.Name,
-		Description: req.Description,
+		Description: &req.Description,
 		IsActive:    true,
 		CreatedBy:   &userID,
 		IPAddress:   c.ClientIP(), // Initial IP, will be updated when server connects
@@ -117,7 +117,7 @@ func (h *ServerHandler) Update(c *gin.Context) {
 	}
 
 	server.Name = req.Name
-	server.Description = req.Description
+	server.Description = &req.Description
 	server.IsActive = req.IsActive
 
 	if err := h.serverRepo.Update(c.Request.Context(), server); err != nil {

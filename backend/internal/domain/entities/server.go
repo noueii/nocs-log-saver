@@ -8,16 +8,16 @@ import (
 
 // Server represents a CS2 game server
 type Server struct {
-	ID          string     `json:"id" db:"id"`
-	Name        string     `json:"name" db:"name"`
-	IPAddress   string     `json:"ip_address" db:"ip_address"`
-	APIKey      string     `json:"api_key" db:"api_key"`
-	Description string     `json:"description" db:"description"`
-	IsActive    bool       `json:"is_active" db:"is_active"`
-	LastSeen    time.Time  `json:"last_seen" db:"last_seen"`
-	CreatedBy   *uuid.UUID `json:"created_by" db:"created_by"`
-	CreatedAt   time.Time  `json:"created_at" db:"created_at"`
-	UpdatedAt   time.Time  `json:"updated_at" db:"updated_at"`
+	ID          string         `json:"id" db:"id"`
+	Name        string         `json:"name" db:"name"`
+	IPAddress   string         `json:"ip_address" db:"ip_address"`
+	APIKey      string         `json:"api_key" db:"api_key"`
+	Description *string        `json:"description" db:"description"`
+	IsActive    bool           `json:"is_active" db:"is_active"`
+	LastSeen    *time.Time     `json:"last_seen" db:"last_seen"`
+	CreatedBy   *uuid.UUID     `json:"created_by" db:"created_by"`
+	CreatedAt   time.Time      `json:"created_at" db:"created_at"`
+	UpdatedAt   time.Time      `json:"updated_at" db:"updated_at"`
 }
 
 // GameSession represents a game session (server or match)

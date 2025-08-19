@@ -89,6 +89,10 @@ func main() {
 			auth.POST("/logout", middleware.AuthMiddleware(authService), authHandler.Logout)
 		}
 
+		// Public API routes (no auth required for viewing logs)
+		api.GET("/logs", handlers.GetLogs(db))
+		api.GET("/servers", handlers.GetServers(db)) // List servers for dropdown
+		
 		// Admin routes for server management (protected)
 		admin := api.Group("/admin")
 		admin.Use(middleware.AuthMiddleware(authService))

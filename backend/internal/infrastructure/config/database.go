@@ -61,8 +61,12 @@ func RunMigrations(db *sqlx.DB) error {
 			name VARCHAR(100),
 			ip_address VARCHAR(45),
 			api_key VARCHAR(255),
+			description TEXT,
+			is_active BOOLEAN DEFAULT true,
 			last_seen TIMESTAMP,
-			created_at TIMESTAMP DEFAULT NOW()
+			created_by UUID REFERENCES users(id),
+			created_at TIMESTAMP DEFAULT NOW(),
+			updated_at TIMESTAMP DEFAULT NOW()
 		)`,
 		
 		`CREATE TABLE IF NOT EXISTS raw_logs (
@@ -145,8 +149,8 @@ func RunMigrations(db *sqlx.DB) error {
 		 ON CONFLICT (username) DO NOTHING`,
 		
 		// Insert test server
-		`INSERT INTO servers (id, name, ip_address, api_key)
-		 VALUES ('testserver', 'Test Server', '127.0.0.1', 'test-api-key-123')
+		`INSERT INTO servers (id, name, ip_address, api_key, is_active, description)
+		 VALUES ('testserver', 'Test Server', '127.0.0.1', 'test-api-key-123', true, 'Default test server for development')
 		 ON CONFLICT (id) DO NOTHING`,
 	}
 
