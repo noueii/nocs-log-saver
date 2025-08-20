@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Server, Database, Activity, Shield, LogIn, LogOut } from 'lucide-react';
+import { Home, Server, Database, Activity, Shield, LogIn, LogOut, FileText } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/contexts/auth-context';
 import { Button } from '@/components/ui/button';
@@ -28,6 +28,11 @@ const navItems = [
     href: '/sessions',
     label: 'Sessions',
     icon: Activity,
+  },
+  {
+    href: '/parse-test',
+    label: 'Parse Test',
+    icon: FileText,
   },
   {
     href: '/admin',

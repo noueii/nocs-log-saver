@@ -197,7 +197,7 @@ Configure your CS2 servers to send logs:
 ```cfg
 # In CS2 server config
 log on
-logaddress_add "https://api.yourdomain.com/logs/server1"
+logaddress_add_http "https://api.yourdomain.com/logs/server1"
 # Note: CS2 servers don't support authentication headers
 # Security is handled via IP whitelisting
 ```

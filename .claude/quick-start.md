@@ -204,7 +204,7 @@ Add to your CS2 server config:
 log on
 
 # Send logs to your backend (adjust URL and server ID)
-logaddress_add "http://localhost:8080/logs/myserver"
+logaddress_add_http "http://localhost:8080/logs/myserver"
 
 # Note: CS2 servers don't support authentication headers
 # Make sure to add your server's IP to ALLOWED_IPS environment variable

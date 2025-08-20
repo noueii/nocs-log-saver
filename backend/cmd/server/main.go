@@ -91,6 +91,7 @@ func main() {
 
 		// Public API routes (no auth required for viewing logs)
 		api.GET("/logs", handlers.GetLogs(db))
+		api.GET("/event-types", handlers.GetEventTypes(db)) // List event types for filtering
 		api.GET("/servers", handlers.GetServers(db)) // List servers for dropdown
 		
 		// Admin routes for server management (protected)
@@ -117,6 +118,9 @@ func main() {
 		middleware.ServerAuthMiddleware(serverRepo),
 		handlers.HandleLogIngestion(db),
 	)
+	
+	// Parse test endpoint (authenticated users only)
+	api.POST("/parse-test", handlers.HandleParseTest(db))
 
 	// Start server with graceful shutdown
 	srv := &http.Server{

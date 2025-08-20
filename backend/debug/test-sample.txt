@@ -1,0 +1,100 @@
+
+[2025-08-19T16:03:52Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:04:10.830 - "NxS Sebo<6><[U:1:387734521]><TERRORIST>" disconnected (reason "NETWORK_DISCONNECT_DISCONNECT_BY_USER")
+[2025-08-19T16:03:52Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:04:10.767 - "SHESKY<7><[U:1:215888626]><>" entered the game
+[2025-08-19T16:03:52Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:04:10.487 - "SHESKY<7><[U:1:215888626]><>" STEAM USERID validated
+[2025-08-19T16:03:51Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:04:09.098 - "SHESKY<7><[U:1:215888626]><>" connected, address "185.163.105.167:54677"
+[2025-08-19T16:03:51Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:04:09.080 - "alker007<8><[U:1:869707820]><CT>" disconnected (reason "NETWORK_DISCONNECT_DISCONNECT_BY_USER")
+[2025-08-19T16:03:50Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:04:08.064 - "brotacel<4><[U:1:210708726]><Spectator>" say ".restore 35"
+[2025-08-19T16:03:49Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:04:07.050 - "xHaPPy_<5><[U:1:56591298]><>" entered the game
+[2025-08-19T16:03:48Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:04:06.768 - "xHaPPy_<5><[U:1:56591298]><>" STEAM USERID validated
+[2025-08-19T16:03:47Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:04:05.378 - "xHaPPy_<5><[U:1:56591298]><>" connected, address "185.163.105.167:52225"
+[2025-08-19T16:03:46Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:04:03.970 - "brotacel<4><[U:1:210708726]><Spectator>" say ".resotre 35"
+[2025-08-19T16:03:43Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:04:01.752 - "xHaPPy_<5><[U:1:56591298]><CT>" disconnected (reason "NETWORK_DISCONNECT_DISCONNECT_BY_USER")
+[2025-08-19T16:03:41Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:59.783 - "brotacel<4><[U:1:210708726]><Spectator>" say ".forcepause"
+[2025-08-19T16:03:38Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:56.030 - Game Over: competitive  de_dust2 score 17:19 after 49 min
+[2025-08-19T16:03:38Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:56.030 - MatchStatus: Score: 17:19 on map "de_dust2" RoundsPlayed: 36
+[2025-08-19T16:03:38Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:56.030 - MatchStatus: Team playing "TERRORIST": team_SHESKY
+[2025-08-19T16:03:38Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:56.030 - MatchStatus: Team playing "CT": team_xHaPPy_
+[2025-08-19T16:03:38Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:56.030 - ACCOLADE, FINAL: {uniqueweaponkills},	SHESKY<7>,	VALUE: 15.000000,	POS: 1,	SCORE: 70.000000
+[2025-08-19T16:03:38Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:56.030 - ACCOLADE, FINAL: {3k},	NxS Sebo<6>,	VALUE: 2.000000,	POS: 1,	SCORE: 53.333336
+[2025-08-19T16:03:38Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:56.030 - ACCOLADE, FINAL: {taserkills},	alker007<8>,	VALUE: 1.000000,	POS: 1,	SCORE: 26.666668
+[2025-08-19T16:03:38Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:56.030 - ACCOLADE, FINAL: {uniqueweaponkills},	xHaPPy_<5>,	VALUE: 10.000000,	POS: 1,	SCORE: 70.000000
+[2025-08-19T16:03:38Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:56.030 - "alker007<8><[U:1:869707820]><CT>" [-1691 2529 9] committed suicide with "world"
+[2025-08-19T16:03:38Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:56.030 - "alker007<8><[U:1:869707820]><CT>" [-1691 2529 9] was killed by the bomb.
+[2025-08-19T16:03:38Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:56.030 - "alker007<9><[U:1:869707820]><CT>" money change 4550+1400 = $5950 (tracked)
+[2025-08-19T16:03:38Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:56.030 - "xHaPPy_<6><[U:1:56591298]><CT>" money change 4450+1400 = $5850 (tracked)
+[2025-08-19T16:03:38Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:56.030 - "SHESKY<8><STEAM_ID_PENDING><TERRORIST>" money change 4250+3500 = $7750 (tracked)
+[2025-08-19T16:03:38Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:56.030 - "NxS Sebo<7><[U:1:387734521]><TERRORIST>" money change 4200+3500 = $7700 (tracked)
+[2025-08-19T16:03:38Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:56.030 - World triggered "Round_End"
+[2025-08-19T16:03:38Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:56.030 - MatchStatus: Score: 17:19 on map "de_dust2" RoundsPlayed: 36
+[2025-08-19T16:03:38Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:56.030 - MatchStatus: Team playing "TERRORIST": team_SHESKY
+[2025-08-19T16:03:38Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:56.030 - MatchStatus: Team playing "CT": team_xHaPPy_
+[2025-08-19T16:03:38Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:56.030 - Team "TERRORIST" scored "19" with "4" players
+[2025-08-19T16:03:38Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:56.030 - Team "CT" scored "17" with "5" players
+[2025-08-19T16:03:38Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:56.030 - Team "TERRORIST" triggered "SFUI_Notice_Target_Bombed" (CT "17") (T "19")
+[2025-08-19T16:03:36Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:54.573 - Match pause is enabled - mp_pause_match
+[2025-08-19T16:03:36Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:54.557 - "NxS Sebo<6><[U:1:387734521]><TERRORIST>" say ".tech "
+[2025-08-19T16:03:29Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:47.713 - "alker007<8><[U:1:869707820]><CT>" triggered "Begin_Bomb_Defuse_Without_Kit"
+[2025-08-19T16:03:29Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:47.275 - "alker007<8><[U:1:869707820]><CT>" triggered "Begin_Bomb_Defuse_Without_Kit"
+[2025-08-19T16:03:29Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:47.057 - "alker007<8><[U:1:869707820]><CT>" triggered "Begin_Bomb_Defuse_Without_Kit"
+[2025-08-19T16:03:28Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:46.807 - "alker007<8><[U:1:869707820]><CT>" triggered "Begin_Bomb_Defuse_Without_Kit"
+[2025-08-19T16:03:28Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:46.541 - "alker007<8><[U:1:869707820]><CT>" triggered "Begin_Bomb_Defuse_Without_Kit"
+[2025-08-19T16:03:28Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:46.213 - "alker007<8><[U:1:869707820]><CT>" triggered "Begin_Bomb_Defuse_Without_Kit"
+[2025-08-19T16:03:24Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:41.932 - "SHESKY<7><[U:1:215888626]><TERRORIST>" disconnected (reason "NETWORK_DISCONNECT_DISCONNECT_BY_USER")
+[2025-08-19T16:03:19Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:37.167 - "alker007<8><[U:1:869707820]><CT>" triggered "Begin_Bomb_Defuse_Without_Kit"
+[2025-08-19T16:03:13Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:31.542 - "NxS Sebo<6><[U:1:387734521]><TERRORIST>" [-1952 1396 76] attacked "alker007<8><[U:1:869707820]><CT>" [-1988 1960 0] with "inferno" (damage "4") (damage_armor "0") (health "49") (armor "98") (hitgroup "generic")
+[2025-08-19T16:03:13Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:31.480 - "alker007<9><[U:1:869707820]><CT>" money change 4250+300 = $4550 (tracked)
+[2025-08-19T16:03:13Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:31.480 - "alker007<8><[U:1:869707820]><CT>" [-1987 1958 0] killed "NxS Sebo<6><[U:1:387734521]><TERRORIST>" [-1946 1416 88] with "m4a1_silencer"
+[2025-08-19T16:03:13Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:31.480 - "alker007<8><[U:1:869707820]><CT>" [-1987 1958 0] attacked "NxS Sebo<6><[U:1:387734521]><TERRORIST>" [-1946 1416 88] with "m4a1" (damage "26") (damage_armor "0") (health "0") (armor "84") (hitgroup "right leg")
+[2025-08-19T16:03:13Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:31.339 - "NxS Sebo<6><[U:1:387734521]><TERRORIST>" [-1943 1425 88] attacked "alker007<8><[U:1:869707820]><CT>" [-1987 1956 0] with "inferno" (damage "4") (damage_armor "0") (health "53") (armor "98") (hitgroup "generic")
+[2025-08-19T16:03:13Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:31.277 - "alker007<8><[U:1:869707820]><CT>" [-1987 1956 0] attacked "NxS Sebo<6><[U:1:387734521]><TERRORIST>" [-1942 1446 71] with "m4a1" (damage "32") (damage_armor "6") (health "18") (armor "84") (hitgroup "stomach")
+[2025-08-19T16:03:13Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:31.183 - "alker007<8><[U:1:869707820]><CT>" [-1987 1956 0] attacked "NxS Sebo<6><[U:1:387734521]><TERRORIST>" [-1942 1459 52] with "m4a1" (damage "25") (damage_armor "5") (health "50") (armor "90") (hitgroup "chest")
+[2025-08-19T16:03:13Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:31.151 - "NxS Sebo<6><[U:1:387734521]><TERRORIST>" [-1942 1452 63] attacked "alker007<8><[U:1:869707820]><CT>" [-1987 1956 0] with "inferno" (damage "4") (damage_armor "0") (health "57") (armor "98") (hitgroup "generic")
+[2025-08-19T16:03:13Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:30.948 - "NxS Sebo<6><[U:1:387734521]><TERRORIST>" [-1942 1481 36] attacked "alker007<8><[U:1:869707820]><CT>" [-1987 1956 0] with "inferno" (damage "2") (damage_armor "0") (health "61") (armor "98") (hitgroup "generic")
+[2025-08-19T16:03:12Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:30.746 - "NxS Sebo<6><[U:1:387734521]><TERRORIST>" [-1942 1505 37] attacked "alker007<8><[U:1:869707820]><CT>" [-1987 1956 0] with "inferno" (damage "2") (damage_armor "0") (health "63") (armor "98") (hitgroup "generic")
+[2025-08-19T16:03:12Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:30.324 - "NxS Sebo<6><[U:1:387734521]><TERRORIST>" threw molotov [-1959 1756 34]
+[2025-08-19T16:03:12Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:30.277 - "alker007<8><[U:1:869707820]><CT>" [-1958 1972 -0] attacked "NxS Sebo<6><[U:1:387734521]><TERRORIST>" [-1942 1556 36] with "m4a1" (damage "25") (damage_armor "5") (health "75") (armor "95") (hitgroup "chest")
+[2025-08-19T16:03:12Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:29.979 - Molotov projectile spawned at -1943.108643 1620.290771 94.266525, velocity -43.637043 382.594208 -112.847183
+[2025-08-19T16:03:12Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:29.979 - "NxS Sebo<6><[U:1:387734521]><TERRORIST>" sv_throw_molotov -1943.109 1620.291 94.267 0.000 0.000 0.000 -43.637 382.594 -112.847 600.000 148.000 0.000 46
+[2025-08-19T16:03:03Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:21.104 - "xHaPPy_<5><[U:1:56591298]><>" entered the game
+[2025-08-19T16:03:02Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:20.699 - "xHaPPy_<5><[U:1:56591298]><>" STEAM USERID validated
+[2025-08-19T16:03:01Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:19.310 - "xHaPPy_<5><[U:1:56591298]><>" connected, address "185.163.105.167:52223"
+[2025-08-19T16:02:59Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:17.682 - "SHESKY<7><[U:1:215888626]><>" entered the game
+[2025-08-19T16:02:59Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:17.417 - "SHESKY<7><[U:1:215888626]><>" STEAM USERID validated
+[2025-08-19T16:02:58Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:16.029 - "SHESKY<7><[U:1:215888626]><>" connected, address "185.163.105.167:49454"
+[2025-08-19T16:02:57Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:15.026 - "NxS Sebo<6><[U:1:387734521]><TERRORIST>" triggered "Planted_The_Bomb" at bombsite B
+[2025-08-19T16:02:57Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:15.026 - "NxS Sebo<7><[U:1:387734521]><TERRORIST>" money change 3900+300 = $4200 (tracked)
+[2025-08-19T16:02:54Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:11.900 - "NxS Sebo<6><[U:1:387734521]><TERRORIST>" triggered "Bomb_Begin_Plant" at bombsite B
+[2025-08-19T16:02:51Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:09.666 - "SHESKY<7><[U:1:215888626]><TERRORIST>" disconnected (reason "NETWORK_DISCONNECT_DISCONNECT_BY_USER")
+[2025-08-19T16:02:50Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:07.916 - "xHaPPy_<5><[U:1:56591298]><CT>" disconnected (reason "NETWORK_DISCONNECT_DISCONNECT_BY_USER")
+[2025-08-19T16:02:49Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:07.526 - "NxS Sebo<7><[U:1:387734521]><TERRORIST>" money change 3600+300 = $3900 (tracked)
+[2025-08-19T16:02:49Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:07.526 - "NxS Sebo<6><[U:1:387734521]><TERRORIST>" [-1397 2105 3] killed "xHaPPy_<5><[U:1:56591298]><CT>" [-1734 2443 66] with "ak47" (headshot)
+[2025-08-19T16:02:49Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:07.526 - "NxS Sebo<6><[U:1:387734521]><TERRORIST>" [-1397 2105 3] attacked "xHaPPy_<5><[U:1:56591298]><CT>" [-1734 2443 66] with "ak47" (damage "109") (damage_armor "15") (health "0") (armor "79") (hitgroup "head")
+[2025-08-19T16:02:48Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:06.589 - "alker007<9><[U:1:869707820]><CT>" money change 3950+300 = $4250 (tracked)
+[2025-08-19T16:02:48Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:06.589 - "alker007<8><[U:1:869707820]><CT>" [-368 2015 -127] killed "SHESKY<7><[U:1:215888626]><TERRORIST>" [-1241 2684 121] with "m4a1_silencer" (headshot)
+[2025-08-19T16:02:48Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:06.589 - "alker007<8><[U:1:869707820]><CT>" [-368 2015 -127] attacked "SHESKY<7><[U:1:215888626]><TERRORIST>" [-1241 2684 121] with "m4a1" (damage "80") (damage_armor "17") (health "0") (armor "79") (hitgroup "head")
+[2025-08-19T16:02:48Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:06.480 - "alker007<8><[U:1:869707820]><CT>" [-368 2015 -127] attacked "SHESKY<7><[U:1:215888626]><TERRORIST>" [-1236 2684 118] with "m4a1" (damage "24") (damage_armor "4") (health "51") (armor "96") (hitgroup "chest")
+[2025-08-19T16:02:48Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:06.214 - "alker007<8><[U:1:869707820]><CT>" [-368 2015 -127] attacked "SHESKY<7><[U:1:215888626]><TERRORIST>" [-1203 2652 117] with "m4a1" (damage "25") (damage_armor "0") (health "75") (armor "100") (hitgroup "right leg")
+[2025-08-19T16:02:45Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:03:03.824 - "alker007<8><[U:1:869707820]><CT>" left buyzone with [ weapon_knife weapon_usp_silencer weapon_m4a1_silencer weapon_smokegrenade kevlar(98) helmet ]
+[2025-08-19T16:02:40Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:02:58.183 - "SHESKY<7><[U:1:215888626]><TERRORIST>" threw smokegrenade [-165 2205 -123]
+[2025-08-19T16:02:38Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:02:56.479 - "xHaPPy_<5><[U:1:56591298]><CT>" [-1278 2273 5] attacked "alker007<8><[U:1:869707820]><CT>" [-14 2052 -124] with "m4a1" (damage "4") (damage_armor "0") (health "65") (armor "98") (hitgroup "chest")
+[2025-08-19T16:02:38Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:02:56.417 - "SHESKY<7><[U:1:215888626]><TERRORIST>" sv_throw_smokegrenade -465.938 1875.818 -68.629 0.000 0.000 0.000 274.876 305.848 52.088 600.000 1078.000 0.000 45 2
+[2025-08-19T16:02:32Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:02:50.839 - "SHESKY<7><[U:1:215888626]><TERRORIST>" blinded for 5.09 by "SHESKY<7><Ўs֬><TERRORIST>" from flashbang entindex 225
+[2025-08-19T16:02:32Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:02:50.839 - "NxS Sebo<6><[U:1:387734521]><TERRORIST>" blinded for 3.15 by "SHESKY<7><[U:1:215888626]><TERRORIST>" from flashbang entindex 225
+[2025-08-19T16:02:32Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:02:50.839 - "SHESKY<7><[U:1:215888626]><TERRORIST>" threw flashbang [-393 1644 -42] flashbang entindex 225)
+[2025-08-19T16:02:31Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:02:49.497 - "SHESKY<7><[U:1:215888626]><TERRORIST>" picked up "smokegrenade"
+[2025-08-19T16:02:31Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:02:49.214 - "SHESKY<7><[U:1:215888626]><TERRORIST>" sv_throw_flashgrenade -271.017 1354.833 -46.747 0.000 0.000 0.000 169.239 398.966 517.503 600.000 324.000 0.000 43
+[2025-08-19T16:02:30Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:02:48.700 - "alker007<8><[U:1:869707820]><CT>" left buyzone with [ weapon_knife weapon_usp_silencer weapon_m4a1_silencer weapon_smokegrenade kevlar(98) helmet ]
+[2025-08-19T16:02:30Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:02:48.605 - "alker007<8><[U:1:869707820]><CT>" threw hegrenade [-437 1756 -82]
+[2025-08-19T16:02:29Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:02:46.979 - "alker007<8><[U:1:869707820]><CT>" sv_throw_hegrenade -112.876 2105.214 -57.142 0.000 0.000 0.000 -566.702 -284.750 231.066 600.000 -888.000 0.000 44 3.000
+[2025-08-19T16:02:28Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:02:46.449 - "alker007<8><[U:1:869707820]><CT>" threw flashbang [-457 1793 -95] flashbang entindex 440)
+[2025-08-19T16:02:26Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:02:44.824 - "alker007<8><[U:1:869707820]><CT>" sv_throw_flashgrenade -60.916 2157.481 -59.621 0.000 0.000 0.000 -571.454 -286.491 216.766 600.000 300.000 0.000 43
+[2025-08-19T16:02:26Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:02:44.324 - "alker007<8><[U:1:869707820]><CT>" threw molotov [-475 1713 -123]
+[2025-08-19T16:02:25Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:02:43.355 - "xHaPPy_<5><[U:1:56591298]><CT>" threw hegrenade [-1975 1833 13]
+[2025-08-19T16:02:24Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:02:42.527 - Molotov projectile spawned at -228.798706 2118.517578 -57.920849, velocity -428.453766 -478.081085 208.544571
+[2025-08-19T16:02:24Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:02:42.527 - "alker007<8><[U:1:869707820]><CT>" sv_throw_molotov -228.799 2118.518 -57.921 0.000 0.000 0.000 -428.454 -478.081 208.545 600.000 553.000 0.000 48
+[2025-08-19T16:02:24Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:02:42.012 - "alker007<8><[U:1:869707820]><CT>" left buyzone with [ weapon_knife weapon_usp_silencer weapon_m4a1_silencer weapon_smokegrenade weapon_flashbang weapon_hegrenade weapon_incgrenade kevlar(98) helmet ]
+[2025-08-19T16:02:23Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:02:41.728 - "xHaPPy_<5><[U:1:56591298]><CT>" sv_throw_hegrenade -1772.982 2657.685 96.852 0.000 0.000 0.000 -126.702 -520.838 198.478 600.000 -317.000 0.000 44 3.000
+[2025-08-19T16:02:22Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:02:40.559 - "SHESKY<7><[U:1:215888626]><TERRORIST>" [-432 1273 -119] attacked "alker007<8><[U:1:869707820]><CT>" [-319 2062 -128] with "ak47" (damage "10") (damage_armor "0") (health "69") (armor "98") (hitgroup "right leg")
+[2025-08-19T16:02:22Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:02:40.355 - "SHESKY<7><[U:1:215888626]><TERRORIST>" [-435 1274 -119] attacked "alker007<8><[U:1:869707820]><CT>" [-331 2053 -128] with "ak47" (damage "11") (damage_armor "1") (health "79") (armor "98") (hitgroup "stomach")
+[2025-08-19T16:02:22Z] 18a5c248-c891-42a6-b72e-af0b184937c1: 08/19/2025 - 19:02:40.245 - "SHESKY<7><[U:1:215888626]><TERRORIST>" [-435 1274 -119] attacked "alker007<8><[U:1:869707820]><CT>" [-340 2043 -127] with "ak47" (damage "10") (damage_armor "1") (health "90") (armor "99") (hitgroup "chest")

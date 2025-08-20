@@ -26,7 +26,7 @@ export function CS2ConfigModal({ server }: CS2ConfigModalProps) {
   // Split into two lines for better display
   const configLines = [
     'log on',
-    `logaddress_add "${logUrl}"`
+    `logaddress_add_http "${logUrl}"`
   ];
   const fullConfig = configLines.join('\n');
 
@@ -83,7 +83,7 @@ export function CS2ConfigModal({ server }: CS2ConfigModalProps) {
               <div className="p-3 overflow-x-auto scrollbar-thin">
                 <code className="text-xs block font-mono">
                   <div>log on</div>
-                  <div className="whitespace-nowrap">logaddress_add "{logUrl}"</div>
+                  <div className="whitespace-nowrap">logaddress_add_http "{logUrl}"</div>
                 </code>
               </div>
             </div>

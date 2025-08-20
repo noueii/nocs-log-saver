@@ -4,11 +4,27 @@
       "Bash(git add:*)",
       "Bash(docker compose exec:*)",
       "mcp__shadcn-ui__get_component",
-      "Bash(docker compose:*)"
+      "Bash(docker compose:*)",
+      "Bash(go run:*)",
+      "Bash(go mod:*)",
+      "Bash(go doc:*)",
+      "Bash(rm:*)",
+      "Bash(npm run build:*)",
+      "Bash(docker exec:*)",
+      "Bash(docker logs:*)",
+      "Bash(mkdir:*)",
+      "Bash(curl:*)",
+      "Bash(timeout 30 go run analyze_remaining_unknowns.go)",
+      "Bash(grep:*)",
+      "Bash(cd:*)"
     ],
     "deny": [],
-    "ask": []
+    "ask": [],
+    "additionalDirectories": [
+      "C:\\c\\Users\\Logitech 2\\Documents\\GitHub\\nocs-log-saver\\backend"
+    ]
   },
+  "enableAllProjectMcpServers": true,
   "enabledMcpjsonServers": [
     "filesystem",
     "github",

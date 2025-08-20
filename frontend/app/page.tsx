@@ -117,7 +117,7 @@ export default function Home() {
             <p>Add the following to your CS2 server configuration:</p>
             <pre className="bg-secondary p-4 rounded-md overflow-x-auto">
               <code>{`log on
-logaddress_add "http://your-domain.com/logs/YOUR_SERVER_ID"`}</code>
+logaddress_add_http "http://your-domain.com/logs/YOUR_SERVER_ID"`}</code>
             </pre>
             <p className="text-sm text-muted-foreground">
               Replace YOUR_SERVER_ID with the ID of your server from the admin panel.

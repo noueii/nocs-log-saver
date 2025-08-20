@@ -249,7 +249,7 @@ CS2 servers should be configured to send logs:
 ```cfg
 # In server.cfg or autoexec.cfg
 log on
-logaddress_add "https://api.yourdomain.com/logs/server1"
+logaddress_add_http "https://api.yourdomain.com/logs/server1"
 
 # No authentication possible - use IP whitelist
 ```

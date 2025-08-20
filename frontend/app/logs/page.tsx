@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { Database, FileText, Search, Download, Server } from 'lucide-react';
+import { Database, FileText, Search, Download, Server, ChevronDown } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -39,21 +39,38 @@ interface LogEntry {
 export default function LogsPage() {
   const [logs, setLogs] = useState<LogEntry[]>([]);
   const [servers, setServers] = useState<{id: string, name: string}[]>([]);
+  const [eventTypes, setEventTypes] = useState<{type: string, count: number}[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState({
     search: '',
     type: 'all',
     serverId: '',
+    eventType: '',
   });
   const [selectedLog, setSelectedLog] = useState<LogEntry | null>(null);
+  const [pagination, setPagination] = useState({
+    limit: 100,
+    offset: 0,
+    hasMore: true,
+  });
 
   useEffect(() => {
     loadServers();
+    loadEventTypes();
   }, []);
 
   useEffect(() => {
-    loadLogs();
-  }, [filter.type, filter.serverId]);
+    // Reset pagination when filters change
+    setPagination(prev => ({ ...prev, offset: 0 }));
+    loadLogs(true);
+  }, [filter.type, filter.serverId, filter.eventType]);
+  
+  useEffect(() => {
+    // Reload event types when server changes
+    if (filter.type === 'parsed') {
+      loadEventTypes();
+    }
+  }, [filter.serverId, filter.type]);
 
   const loadServers = async () => {
     try {
@@ -64,20 +81,36 @@ export default function LogsPage() {
       console.error('Failed to load servers:', error);
     }
   };
+  
+  const loadEventTypes = async () => {
+    try {
+      const params = new URLSearchParams();
+      if (filter.serverId) params.append('server_id', filter.serverId);
+      
+      const response = await fetch(`http://localhost:9090/api/event-types?${params.toString()}`);
+      const data = await response.json();
+      setEventTypes(data);
+    } catch (error) {
+      console.error('Failed to load event types:', error);
+    }
+  };
 
-  const loadLogs = useCallback(async () => {
+  const loadLogs = useCallback(async (reset = false) => {
     try {
       setLoading(true);
       // Build query params
       const params = new URLSearchParams();
       if (filter.serverId) params.append('server_id', filter.serverId);
       if (filter.type !== 'all') params.append('type', filter.type);
+      if (filter.eventType && filter.type === 'parsed') params.append('event_type', filter.eventType);
+      params.append('limit', pagination.limit.toString());
+      params.append('offset', reset ? '0' : pagination.offset.toString());
       
       const response = await fetch(`http://localhost:9090/api/logs?${params.toString()}`);
       const data = await response.json();
       
       // Map the API response to our LogEntry interface
-      const logs: LogEntry[] = data.map((log: any) => ({
+      const newLogs: LogEntry[] = data.map((log: any) => ({
         id: log.id,
         server_id: log.server_id,
         server_name: servers.find(s => s.id === log.server_id)?.name || log.server_id,
@@ -91,14 +124,23 @@ export default function LogsPage() {
         team: log.team,
       }));
       
-      setLogs(logs);
+      if (reset) {
+        setLogs(newLogs);
+      } else {
+        setLogs(prev => [...prev, ...newLogs]);
+      }
+      
+      setPagination(prev => ({
+        ...prev,
+        hasMore: newLogs.length === pagination.limit,
+      }));
     } catch (error) {
       console.error('Failed to load logs:', error);
-      setLogs([]);
+      if (reset) setLogs([]);
     } finally {
       setLoading(false);
     }
-  }, [filter.serverId, filter.type, servers]);
+  }, [filter.serverId, filter.type, filter.eventType, servers, pagination.limit, pagination.offset]);
 
   const filteredLogs = logs.filter(log => {
     if (filter.search && !log.content.toLowerCase().includes(filter.search.toLowerCase())) {
@@ -107,11 +149,27 @@ export default function LogsPage() {
     return true;
   });
 
-  const downloadLogs = async () => {
+  const loadMoreLogs = () => {
+    setPagination(prev => ({
+      ...prev,
+      offset: prev.offset + prev.limit,
+    }));
+    loadLogs(false);
+  };
+
+  const downloadLogs = async (all = false) => {
     const params = new URLSearchParams();
     if (filter.serverId) params.append('server_id', filter.serverId);
     if (filter.type !== 'all') params.append('type', filter.type);
+    if (filter.eventType && filter.type === 'parsed') params.append('event_type', filter.eventType);
     params.append('download', 'true');
+    
+    // If downloading all, set limit to 0 (backend will interpret as all)
+    if (all) {
+      params.append('limit', '0');
+    } else {
+      params.append('limit', '100');
+    }
     
     window.open(`http://localhost:9090/api/logs?${params.toString()}`, '_blank');
   };
@@ -174,16 +232,36 @@ export default function LogsPage() {
               </SelectContent>
             </Select>
             
+            {/* Event Type selector - only show for parsed logs */}
+            {filter.type === 'parsed' && (
+              <Select
+                value={filter.eventType}
+                onValueChange={(value) => setFilter({ ...filter, eventType: value === 'all' ? '' : value })}
+              >
+                <SelectTrigger className="w-[200px]">
+                  <SelectValue placeholder="All Event Types" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Event Types</SelectItem>
+                  {eventTypes.map(eventType => (
+                    <SelectItem key={eventType.type} value={eventType.type}>
+                      {eventType.type} ({eventType.count})
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
+            
             <div className="flex gap-2">
               <Button
                 variant={filter.type === 'all' ? 'default' : 'outline'}
-                onClick={() => setFilter({ ...filter, type: 'all' })}
+                onClick={() => setFilter({ ...filter, type: 'all', eventType: '' })}
               >
                 All
               </Button>
               <Button
                 variant={filter.type === 'raw' ? 'default' : 'outline'}
-                onClick={() => setFilter({ ...filter, type: 'raw' })}
+                onClick={() => setFilter({ ...filter, type: 'raw', eventType: '' })}
               >
                 Raw
               </Button>
@@ -201,15 +279,27 @@ export default function LogsPage() {
               </Button>
             </div>
             
-            {/* Download button */}
-            <Button
-              variant="outline"
-              onClick={downloadLogs}
-              className="gap-2"
-            >
-              <Download className="h-4 w-4" />
-              Download
-            </Button>
+            {/* Download buttons */}
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                onClick={() => downloadLogs(false)}
+                className="gap-2"
+                title="Download currently visible logs"
+              >
+                <Download className="h-4 w-4" />
+                Download (100)
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => downloadLogs(true)}
+                className="gap-2"
+                title="Download all logs matching current filters"
+              >
+                <Download className="h-4 w-4" />
+                Download All
+              </Button>
+            </div>
           </div>
 
           {/* Logs Table */}
@@ -274,6 +364,26 @@ export default function LogsPage() {
               )}
             </TableBody>
           </Table>
+          
+          {/* Load More Button */}
+          {!loading && pagination.hasMore && filteredLogs.length > 0 && (
+            <div className="mt-4 flex justify-center">
+              <Button
+                variant="outline"
+                onClick={loadMoreLogs}
+                className="gap-2"
+              >
+                <ChevronDown className="h-4 w-4" />
+                Load More Logs
+              </Button>
+            </div>
+          )}
+          
+          {/* Log Count */}
+          <div className="mt-4 text-sm text-muted-foreground text-center">
+            Showing {filteredLogs.length} logs
+            {pagination.hasMore && ' (more available)'}
+          </div>
         </CardContent>
       </Card>
 

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"strconv"
 	"strings"
 	"time"
 
@@ -16,6 +17,19 @@ import (
 
 // HandleLogIngestion handles incoming CS2 server logs
 func HandleLogIngestion(db *sqlx.DB) gin.HandlerFunc {
+	// Create a single stateful parser instance to be reused across requests
+	// This allows it to maintain state for multi-line JSON assembly
+	statefulParser := services.NewStatefulParserService(db)
+	
+	// Start a cleanup goroutine to remove stale buffers
+	go func() {
+		ticker := time.NewTicker(5 * time.Minute)
+		defer ticker.Stop()
+		for range ticker.C {
+			statefulParser.CleanupOldBuffers(10 * time.Minute)
+		}
+	}()
+	
 	return func(c *gin.Context) {
 		serverID := c.GetString("server_id") // Set by middleware
 		clientIP := c.GetString("client_ip") // Set by middleware
@@ -33,9 +47,6 @@ func HandleLogIngestion(db *sqlx.DB) gin.HandlerFunc {
 		content := string(body)
 		lines := strings.Split(content, "\n")
 
-		// Create parser service
-		parserService := services.NewParserService(db)
-
 		// Process each log line
 		var savedCount int
 		for _, line := range lines {
@@ -52,8 +63,8 @@ func HandleLogIngestion(db *sqlx.DB) gin.HandlerFunc {
 			}
 			savedCount++
 			
-			// Parse log asynchronously
-			go parserService.ParseAndStore(logID, serverID, line)
+			// Parse log using stateful parser (handles multi-line JSON)
+			go statefulParser.ParseAndStore(logID, serverID, line)
 		}
 
 		// Update server last seen
@@ -120,28 +131,52 @@ func GetLogs(db *sqlx.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		serverID := c.Query("server_id")
 		logType := c.Query("type") // raw, parsed, or failed
-		limit := 100 // Default limit
+		eventType := c.Query("event_type") // filter by event type (for parsed logs)
+		limitStr := c.DefaultQuery("limit", "100")
+		offsetStr := c.DefaultQuery("offset", "0")
 		download := c.Query("download") == "true"
+		
+		limit := 100
+		if l, err := strconv.Atoi(limitStr); err == nil {
+			limit = l
+			// For download all, set limit to 0 (no limit)
+			if download && limit == 0 {
+				limit = 1000000 // Set a high limit for "all"
+			}
+		}
+		
+		offset := 0
+		if o, err := strconv.Atoi(offsetStr); err == nil {
+			offset = o
+		}
 		
 		var logs []gin.H
 		
 		switch logType {
 		case "parsed":
-			logs = getParsedLogs(db, serverID, limit)
+			logs = getParsedLogsWithEventType(db, serverID, eventType, limit, offset)
 		case "failed":
-			logs = getFailedLogs(db, serverID, limit)
+			logs = getFailedLogs(db, serverID, limit, offset)
 		default: // "raw" or empty
-			logs = getRawLogs(db, serverID, limit)
+			logs = getRawLogs(db, serverID, limit, offset)
 		}
 		
 		// If download requested, return as text file
 		if download {
 			var content strings.Builder
 			for _, log := range logs {
-				content.WriteString(fmt.Sprintf("[%s] %s: %s\n", 
-					log["created_at"], 
-					log["server_id"], 
-					log["content"]))
+				if eventTypeVal, ok := log["event_type"]; ok && eventTypeVal != nil {
+					content.WriteString(fmt.Sprintf("[%s] %s [%s]: %s\n", 
+						log["created_at"], 
+						log["server_id"],
+						eventTypeVal,
+						log["content"]))
+				} else {
+					content.WriteString(fmt.Sprintf("[%s] %s: %s\n", 
+						log["created_at"], 
+						log["server_id"], 
+						log["content"]))
+				}
 			}
 			
 			c.Header("Content-Type", "text/plain")
@@ -154,7 +189,7 @@ func GetLogs(db *sqlx.DB) gin.HandlerFunc {
 	}
 }
 
-func getRawLogs(db *sqlx.DB, serverID string, limit int) []gin.H {
+func getRawLogs(db *sqlx.DB, serverID string, limit, offset int) []gin.H {
 	var query string
 	var args []interface{}
 	
@@ -164,17 +199,17 @@ func getRawLogs(db *sqlx.DB, serverID string, limit int) []gin.H {
 			FROM raw_logs 
 			WHERE server_id = $1 
 			ORDER BY received_at DESC 
-			LIMIT $2
+			LIMIT $2 OFFSET $3
 		`
-		args = []interface{}{serverID, limit}
+		args = []interface{}{serverID, limit, offset}
 	} else {
 		query = `
 			SELECT id, server_id, content, received_at as created_at 
 			FROM raw_logs 
 			ORDER BY received_at DESC 
-			LIMIT $1
+			LIMIT $1 OFFSET $2
 		`
-		args = []interface{}{limit}
+		args = []interface{}{limit, offset}
 	}
 	
 	rows, err := db.Query(query, args...)
@@ -211,30 +246,41 @@ func getRawLogs(db *sqlx.DB, serverID string, limit int) []gin.H {
 	return logs
 }
 
-func getParsedLogs(db *sqlx.DB, serverID string, limit int) []gin.H {
+func getParsedLogsWithEventType(db *sqlx.DB, serverID, eventType string, limit, offset int) []gin.H {
 	var query string
 	var args []interface{}
 	
+	// Build query based on filters
+	whereConditions := []string{}
+	argIndex := 1
+	
 	if serverID != "" {
-		query = `
-			SELECT p.id, p.server_id, p.event_type, p.event_data, p.created_at, r.content
-			FROM parsed_logs p
-			JOIN raw_logs r ON p.raw_log_id = r.id
-			WHERE p.server_id = $1
-			ORDER BY p.created_at DESC
-			LIMIT $2
-		`
-		args = []interface{}{serverID, limit}
-	} else {
-		query = `
-			SELECT p.id, p.server_id, p.event_type, p.event_data, p.created_at, r.content
-			FROM parsed_logs p
-			JOIN raw_logs r ON p.raw_log_id = r.id
-			ORDER BY p.created_at DESC
-			LIMIT $1
-		`
-		args = []interface{}{limit}
+		whereConditions = append(whereConditions, fmt.Sprintf("p.server_id = $%d", argIndex))
+		args = append(args, serverID)
+		argIndex++
 	}
+	
+	if eventType != "" {
+		whereConditions = append(whereConditions, fmt.Sprintf("p.event_type = $%d", argIndex))
+		args = append(args, eventType)
+		argIndex++
+	}
+	
+	whereClause := ""
+	if len(whereConditions) > 0 {
+		whereClause = "WHERE " + strings.Join(whereConditions, " AND ")
+	}
+	
+	query = fmt.Sprintf(`
+		SELECT p.id, p.server_id, p.event_type, p.event_data, p.created_at, r.content
+		FROM parsed_logs p
+		JOIN raw_logs r ON p.raw_log_id = r.id
+		%s
+		ORDER BY p.created_at DESC
+		LIMIT $%d OFFSET $%d
+	`, whereClause, argIndex, argIndex+1)
+	
+	args = append(args, limit, offset)
 	
 	rows, err := db.Query(query, args...)
 	if err != nil {
@@ -274,7 +320,7 @@ func getParsedLogs(db *sqlx.DB, serverID string, limit int) []gin.H {
 	return logs
 }
 
-func getFailedLogs(db *sqlx.DB, serverID string, limit int) []gin.H {
+func getFailedLogs(db *sqlx.DB, serverID string, limit, offset int) []gin.H {
 	var query string
 	var args []interface{}
 	
@@ -285,18 +331,18 @@ func getFailedLogs(db *sqlx.DB, serverID string, limit int) []gin.H {
 			JOIN raw_logs r ON f.raw_log_id = r.id
 			WHERE r.server_id = $1
 			ORDER BY f.created_at DESC
-			LIMIT $2
+			LIMIT $2 OFFSET $3
 		`
-		args = []interface{}{serverID, limit}
+		args = []interface{}{serverID, limit, offset}
 	} else {
 		query = `
 			SELECT f.id, r.server_id, r.content, f.error_message, f.created_at
 			FROM failed_parses f
 			JOIN raw_logs r ON f.raw_log_id = r.id
 			ORDER BY f.created_at DESC
-			LIMIT $1
+			LIMIT $1 OFFSET $2
 		`
-		args = []interface{}{limit}
+		args = []interface{}{limit, offset}
 	}
 	
 	rows, err := db.Query(query, args...)
@@ -333,6 +379,63 @@ func getFailedLogs(db *sqlx.DB, serverID string, limit int) []gin.H {
 		return []gin.H{}
 	}
 	return logs
+}
+
+// GetEventTypes returns distinct event types from parsed logs
+func GetEventTypes(db *sqlx.DB) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		serverID := c.Query("server_id")
+		
+		var query string
+		var args []interface{}
+		
+		if serverID != "" {
+			query = `
+				SELECT DISTINCT event_type, COUNT(*) as count
+				FROM parsed_logs
+				WHERE server_id = $1
+				GROUP BY event_type
+				ORDER BY count DESC
+			`
+			args = []interface{}{serverID}
+		} else {
+			query = `
+				SELECT DISTINCT event_type, COUNT(*) as count
+				FROM parsed_logs
+				GROUP BY event_type
+				ORDER BY count DESC
+			`
+		}
+		
+		rows, err := db.Query(query, args...)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"error": "Failed to fetch event types",
+			})
+			return
+		}
+		defer rows.Close()
+		
+		var eventTypes []gin.H
+		for rows.Next() {
+			var eventType string
+			var count int
+			if err := rows.Scan(&eventType, &count); err != nil {
+				continue
+			}
+			
+			eventTypes = append(eventTypes, gin.H{
+				"type":  eventType,
+				"count": count,
+			})
+		}
+		
+		if eventTypes == nil {
+			eventTypes = []gin.H{}
+		}
+		
+		c.JSON(http.StatusOK, eventTypes)
+	}
 }
 
 // GetServers returns list of servers for dropdown

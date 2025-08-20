@@ -1,0 +1,198 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CS2 Event Types Schema",
+  "description": "Schema definition for all CS2 event types recognized by the log parser",
+  "version": "1.2.0",
+  "type": "object",
+  "properties": {
+    "eventTypes": {
+      "type": "object",
+      "properties": {
+        "combat": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["kill", "kill_assist", "attack", "killed_by_bomb", "suicide"]
+          }
+        },
+        "rounds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["round_start", "round_end", "round_restart", "freeze_time_start", "freeze_period_start"]
+          }
+        },
+        "matches": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["match_start", "match_end", "game_commencing", "game_over_competitive", "game_over_casual", "game_over"]
+          }
+        },
+        "playerConnection": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["player_connect", "player_disconnect", "player_entered", "userid_validated"]
+          }
+        },
+        "communication": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["chat", "chat_message", "chat_pause_command", "chat_restore_command", "chat_ready_command", "chat_gg"]
+          }
+        },
+        "team": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["team_switch", "team_scored", "team_notice", "team_playing", "team_ct_scored", "team_t_scored"]
+          }
+        },
+        "bomb": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["bomb_planted", "bomb_defused", "bomb_begin_defuse", "bomb_got", "bomb_dropped", "bomb_begin_plant", "bomb_planted_trigger", "bomb_defused_trigger"]
+          }
+        },
+        "economy": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["purchase", "money_change", "left_buyzone"]
+          }
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["picked_up", "dropped"]
+          }
+        },
+        "grenades": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["grenade_thrown", "blinded", "projectile_spawned", "throw_debug", "throw_debug_molotov", "throw_debug_smoke", "throw_debug_flash", "throw_debug_he"]
+          }
+        },
+        "matchStatus": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["match_status", "match_status_score", "match_status_teams"]
+          }
+        },
+        "pause": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["match_pause", "match_pause_enabled", "match_pause_disabled", "match_unpause"]
+          }
+        },
+        "serverConfig": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["server_cvar", "cvar_maxrounds", "cvar_overtime", "cvar_freezetime", "cvar_tournament", "cvar_mp_setting"]
+          }
+        },
+        "achievements": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^accolade(_.*)?$"
+          }
+        },
+        "maps": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["loading_map", "started_map"]
+          }
+        },
+        "logging": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["log_file", "log_file_started", "log_file_closed"]
+          }
+        },
+        "administration": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["rcon_command"]
+          }
+        },
+        "triggered": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^trigger(ed)?[_-].*$"
+          }
+        },
+        "unknown": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["unknown", "unknown_other"]
+          }
+        }
+      }
+    },
+    "eventStructure": {
+      "type": "object",
+      "required": ["event_type", "event_data", "timestamp"],
+      "properties": {
+        "event_type": {
+          "type": "string",
+          "description": "One of the recognized event types"
+        },
+        "event_data": {
+          "type": "object",
+          "description": "JSON object with event-specific fields"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO 8601 timestamp of the event"
+        },
+        "server_id": {
+          "type": "string",
+          "description": "Identifier of the CS2 server"
+        },
+        "raw_content": {
+          "type": "string",
+          "description": "Original log line before parsing"
+        }
+      }
+    }
+  },
+  "definitions": {
+    "allEventTypes": {
+      "type": "string",
+      "enum": [
+        "kill", "kill_assist", "attack", "killed_by_bomb", "suicide",
+        "round_start", "round_end", "round_restart", "freeze_time_start", "freeze_period_start",
+        "match_start", "match_end", "game_commencing", "game_over_competitive", "game_over_casual", "game_over",
+        "player_connect", "player_disconnect", "player_entered", "userid_validated",
+        "chat", "chat_message", "chat_pause_command", "chat_restore_command", "chat_ready_command", "chat_gg",
+        "team_switch", "team_scored", "team_notice", "team_playing", "team_ct_scored", "team_t_scored",
+        "bomb_planted", "bomb_defused", "bomb_begin_defuse", "bomb_got", "bomb_dropped", "bomb_begin_plant", "bomb_planted_trigger", "bomb_defused_trigger",
+        "purchase", "money_change", "left_buyzone",
+        "picked_up", "dropped",
+        "grenade_thrown", "blinded", "projectile_spawned", "throw_debug", "throw_debug_molotov", "throw_debug_smoke", "throw_debug_flash", "throw_debug_he",
+        "match_status", "match_status_score", "match_status_teams",
+        "match_pause", "match_pause_enabled", "match_pause_disabled", "match_unpause",
+        "server_cvar", "cvar_maxrounds", "cvar_overtime", "cvar_freezetime", "cvar_tournament", "cvar_mp_setting",
+        "loading_map", "started_map",
+        "log_file", "log_file_started", "log_file_closed",
+        "rcon_command",
+        "unknown", "unknown_other"
+      ]
+    }
+  }
+}

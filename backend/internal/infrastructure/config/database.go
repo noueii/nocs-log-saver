@@ -39,8 +39,9 @@ func NewDatabase(config DatabaseConfig) (*sqlx.DB, error) {
 // RunMigrations executes database migrations
 func RunMigrations(db *sqlx.DB) error {
 	migrations := []string{
-		// Enable UUID extension
+		// Enable required extensions
 		`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`,
+		`CREATE EXTENSION IF NOT EXISTS "pgcrypto"`,
 		
 		// Create users table FIRST (no dependencies)
 		`CREATE TABLE IF NOT EXISTS users (
@@ -56,11 +57,18 @@ func RunMigrations(db *sqlx.DB) error {
 			updated_at TIMESTAMP DEFAULT NOW()
 		)`,
 		
+		// Create function to generate API keys
+		`CREATE OR REPLACE FUNCTION generate_api_key() RETURNS TEXT AS $$
+		BEGIN
+			RETURN 'srv_' || encode(gen_random_bytes(32), 'hex');
+		END;
+		$$ LANGUAGE plpgsql`,
+		
 		`CREATE TABLE IF NOT EXISTS servers (
 			id VARCHAR(50) PRIMARY KEY,
 			name VARCHAR(100),
 			ip_address VARCHAR(45),
-			api_key VARCHAR(255),
+			api_key VARCHAR(255) UNIQUE,
 			description TEXT,
 			is_active BOOLEAN DEFAULT true,
 			last_seen TIMESTAMP,
@@ -133,6 +141,8 @@ func RunMigrations(db *sqlx.DB) error {
 		// Create indexes
 		`CREATE INDEX IF NOT EXISTS idx_users_email ON users(email)`,
 		`CREATE INDEX IF NOT EXISTS idx_users_username ON users(username)`,
+		`CREATE INDEX IF NOT EXISTS idx_servers_api_key ON servers(api_key) WHERE is_active = true`,
+		`CREATE INDEX IF NOT EXISTS idx_servers_active ON servers(is_active)`,
 		`CREATE INDEX IF NOT EXISTS idx_raw_logs_server_id ON raw_logs(server_id)`,
 		`CREATE INDEX IF NOT EXISTS idx_parsed_logs_session_id ON parsed_logs(session_id)`,
 		`CREATE INDEX IF NOT EXISTS idx_parsed_logs_event_type ON parsed_logs(event_type)`,
@@ -148,10 +158,11 @@ func RunMigrations(db *sqlx.DB) error {
 		 VALUES ('admin', 'admin@cs2logs.local', '$2a$10$aEfbkq9FjLKf08TDjViFQ.7f8i/Mwc2Z3boihMEgpMR39rIByH3A2', 'System Administrator', 'admin', true)
 		 ON CONFLICT (username) DO NOTHING`,
 		
-		// Insert test server
+		// Insert test server with generated API key
 		`INSERT INTO servers (id, name, ip_address, api_key, is_active, description)
-		 VALUES ('testserver', 'Test Server', '127.0.0.1', 'test-api-key-123', true, 'Default test server for development')
-		 ON CONFLICT (id) DO NOTHING`,
+		 VALUES ('testserver', 'Test Server', '127.0.0.1', generate_api_key(), true, 'Default test server for development')
+		 ON CONFLICT (id) DO UPDATE SET
+		   api_key = COALESCE(servers.api_key, generate_api_key())`,
 	}
 
 	for i, migration := range migrations {

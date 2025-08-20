@@ -20,9 +20,10 @@ That's it. Everything is set up automatically. No additional steps needed.
 - **Log Collection**: Receive and store logs from multiple CS2 servers
 - **IP Whitelisting**: Dynamic IP whitelist management through admin dashboard
 - **Real-time Monitoring**: View active game sessions and server status
-- **Log Analysis**: Parse and analyze CS2 server logs
+- **Log Analysis**: Parse and analyze CS2 server logs with 40+ event types
 - **Session Tracking**: Track match sessions, rounds, and game phases
 - **Web Dashboard**: Modern UI for visualization and management
+- **Comprehensive Event Parsing**: Recognizes and categorizes over 40 different CS2 event types
 
 ## Quick Start
 
@@ -82,7 +83,7 @@ Add the following to your CS2 server configuration:
 
 ```
 log on
-logaddress_add "http://your-domain.com/logs/YOUR_SERVER_ID"
+logaddress_add_http "http://your-domain.com/logs/YOUR_SERVER_ID"
 ```
 
 Replace:
@@ -164,8 +165,15 @@ make watch-backend
 - `POST /api/admin/whitelist` - Add IP to whitelist
 - `DELETE /api/admin/whitelist/:id` - Remove IP from whitelist
 - `GET /api/servers` - Get connected servers
-- `GET /api/logs` - Get stored logs
+- `GET /api/logs` - Get stored logs with event type filtering
+- `GET /api/event-types` - Get all recognized event types with counts
+- `POST /api/parse-test` - Test log parsing
 - `GET /api/stats` - Get system statistics
+
+## Documentation
+
+- [CS2 Event Types Documentation](./docs/CS2_EVENT_TYPES.md) - Comprehensive guide to all 40+ recognized event types
+- [Event Types Quick Reference](./docs/EVENT_TYPES_QUICK_REFERENCE.md) - Quick lookup for developers
 
 ## Security
 
