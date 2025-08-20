@@ -5,7 +5,7 @@ import (
 	"strings"
 	"time"
 
-	cs2log "github.com/janstuemmel/cs2-log"
+	cs2log "github.com/noueii/cs2-log"
 	"github.com/jmoiron/sqlx"
 )
 
@@ -26,8 +26,8 @@ func (s *ParserService) ParseAndStore(rawLogID, serverID, content string) error 
 	// Extract the actual CS2 log content from our custom format
 	actualContent := s.ExtractActualContent(content)
 	
-	// Try to parse the log using the Parse function
-	parsedLog, err := cs2log.Parse(actualContent)
+	// Try to parse the log using the enhanced Parse function with custom events
+	parsedLog, err := cs2log.ParseEnhanced(actualContent)
 	
 	if err != nil {
 		// Store as failed parse
@@ -65,7 +65,6 @@ func (s *ParserService) storeFailedParse(rawLogID, errorMsg string) error {
 func (s *ParserService) getEventType(parsedLog cs2log.Message) string {
 	// The cs2-log library returns different types for different events
 	// We need to type switch to determine the event
-	// NOTE: cs2-log returns non-pointer types (structs), not pointers
 	switch msg := parsedLog.(type) {
 	// Kill and damage events
 	case cs2log.PlayerKill:
@@ -87,13 +86,20 @@ func (s *ParserService) getEventType(parsedLog cs2log.Message) string {
 	case cs2log.WorldRoundRestart:
 		return "round_restart"
 	case cs2log.FreezTimeStart:
-		return "freeze_period_start"  // This is the actual freeze period start
+		return "freeze_period_start"
+	case cs2log.FreezePeriod:
+		if msg.Action == "start" {
+			return "freeze_period_start"
+		}
+		return "freeze_period_end"
 	
 	// Match events
 	case cs2log.WorldMatchStart:
 		return "match_start"
 	case cs2log.GameOver:
 		return "match_end"
+	case cs2log.GameOverDetailed:
+		return "game_over_" + msg.Mode
 	case cs2log.WorldGameCommencing:
 		return "game_commencing"
 	
@@ -104,24 +110,33 @@ func (s *ParserService) getEventType(parsedLog cs2log.Message) string {
 		return "player_disconnect"
 	case cs2log.PlayerEntered:
 		return "player_entered"
+	case cs2log.PlayerValidated:
+		return "userid_validated"
 	
 	// Communication events
-	case cs2log.PlayerSay:
-		// Check message content for specific commands
-		if strings.Contains(msg.Text, ".pause") || strings.Contains(msg.Text, ".forcepause") {
+	case cs2log.ChatCommand:
+		// Return specific command types
+		switch msg.Command {
+		case "pause", "forcepause":
 			return "chat_pause_command"
-		}
-		if strings.Contains(msg.Text, ".restore") || strings.Contains(msg.Text, ".resotre") {
+		case "restore", "resotre":
 			return "chat_restore_command"
-		}
-		if strings.Contains(msg.Text, ".ready") || strings.Contains(msg.Text, ".rdy") {
+		case "ready", "rdy":
 			return "chat_ready_command"
+		case "unpause":
+			return "chat_unpause_command"
+		case "tech":
+			return "chat_tech_command"
+		case "tac":
+			return "chat_tac_command"
+		default:
+			return "chat_command"
 		}
+	case cs2log.PlayerSay:
+		// Check for gg messages
 		if msg.Text == "gg" || msg.Text == "gg wp" {
 			return "chat_gg"
 		}
-		// For documentation consistency, we'll use chat_message for non-command messages
-		// but both "chat" and "chat_message" are valid and represent the same thing
 		return "chat_message"
 	
 	// Team events
@@ -131,6 +146,8 @@ func (s *ParserService) getEventType(parsedLog cs2log.Message) string {
 		return "team_scored"
 	case cs2log.TeamNotice:
 		return "team_notice"
+	case cs2log.TeamPlaying:
+		return "team_playing"
 	
 	// Bomb events
 	case cs2log.PlayerBombPlanted:
@@ -143,12 +160,16 @@ func (s *ParserService) getEventType(parsedLog cs2log.Message) string {
 		return "bomb_got"
 	case cs2log.PlayerBombDropped:
 		return "bomb_dropped"
+	case cs2log.BombEvent:
+		return "bomb_" + msg.Action
 	
 	// Economy events
 	case cs2log.PlayerPurchase:
 		return "purchase"
 	case cs2log.PlayerMoneyChange:
 		return "money_change"
+	case cs2log.PlayerLeftBuyzone:
+		return "left_buyzone"
 	
 	// Item events
 	case cs2log.PlayerPickedUp:
@@ -163,13 +184,70 @@ func (s *ParserService) getEventType(parsedLog cs2log.Message) string {
 		return "blinded"
 	case cs2log.ProjectileSpawned:
 		return "projectile_spawned"
+	case cs2log.GrenadeThrowDebug:
+		return "throw_debug_" + strings.TrimPrefix(msg.GrenadeType, "grenade")
 	
-	// Unknown or custom events
-	case cs2log.Unknown:
-		// For Unknown type, try to classify based on content
-		if msg.Raw != "" {
-			return s.classifyUnknownEvent(msg.Raw)
+	// Achievement events
+	case cs2log.PlayerAccolade:
+		if msg.IsFinal {
+			return "accolade_final_" + msg.Type
 		}
+		return "accolade_round_" + msg.Type
+	
+	// Match status events
+	case cs2log.MatchStatus:
+		return "match_status_score"
+	case cs2log.MatchPause:
+		return "match_pause_" + msg.Action
+	
+	// Server events
+	case cs2log.ServerCvar:
+		// Specific cvar types
+		if strings.HasPrefix(msg.Name, "mp_") {
+			if msg.Name == "mp_maxrounds" {
+				return "cvar_maxrounds"
+			}
+			if strings.Contains(msg.Name, "overtime") {
+				return "cvar_overtime"
+			}
+			if msg.Name == "mp_freezetime" {
+				return "cvar_freezetime"
+			}
+			if msg.Name == "mp_tournament" {
+				return "cvar_tournament"
+			}
+			return "cvar_mp_setting"
+		}
+		return "server_cvar"
+	case cs2log.RconCommand:
+		return "rcon_command"
+	
+	// Map events
+	case cs2log.LoadingMap:
+		return "loading_map"
+	case cs2log.StartedMap:
+		return "started_map"
+	
+	// Log file events
+	case cs2log.LogFile:
+		return "log_file_" + msg.Action
+	
+	// Stats events
+	case cs2log.StatsJSON:
+		return "stats_json_" + msg.Type
+	
+	// Triggered events
+	case cs2log.TriggeredEvent:
+		// Normalize event names
+		event := strings.ToLower(msg.Event)
+		event = strings.ReplaceAll(event, "_", "-")
+		event = strings.ReplaceAll(event, " ", "-")
+		return "trigger_" + event
+	
+	// Unknown events (should be rare now)
+	case cs2log.Unknown:
+		// Most unknowns should now be properly classified
+		// This is just a fallback
 		return "unknown"
 	
 	default:
@@ -243,8 +321,8 @@ func (s *ParserService) ParseLogLine(content string) (*ParsedLog, error) {
 	// Extract the actual CS2 log content from our custom format
 	actualContent := s.ExtractActualContent(content)
 	
-	// Try to parse the log using the Parse function
-	parsedLog, err := cs2log.Parse(actualContent)
+	// Try to parse the log using the enhanced Parse function with custom events
+	parsedLog, err := cs2log.ParseEnhanced(actualContent)
 	
 	if err != nil {
 		return nil, fmt.Errorf("parse error: %w", err)

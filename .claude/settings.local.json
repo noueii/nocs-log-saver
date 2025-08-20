@@ -16,7 +16,10 @@
       "Bash(curl:*)",
       "Bash(timeout 30 go run analyze_remaining_unknowns.go)",
       "Bash(grep:*)",
-      "Bash(cd:*)"
+      "Bash(cd:*)",
+      "Bash(git remote rename:*)",
+      "Bash(git remote add:*)",
+      "Bash(go test:*)"
     ],
     "deny": [],
     "ask": [],
